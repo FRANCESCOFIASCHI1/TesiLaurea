@@ -1,0 +1,20 @@
+\chapter{Panoramica sull'Efficientamento}
+Efficientare un algoritmo significa renderlo eseguibile in maniera ottimizzata anche con macchine con caratteristiche molto restringenti, come nel caso dei satelliti, con poche risorse hardware come ad esempio la CPU poco performante.
+Nel nostro caso effettuiamo un Transfer Learning, ossia il riuso di un modello già addestrato su un dataset, riadattandolo al nuovo compito o dataset che vogliamo utilizzare. Questo processo può essere effettuato in diversi modi:
+\begin{itemize}
+    \item Estrazione delle Caratteristiche: consiste nell'estrarre caratteristiche utili dai dati senza modificare i pesi calcolati nel training precedente;
+    \item Fine-Tuning:
+    \begin{itemize}
+        \item Addestramento sull'intera rete: in questo caso aggiorniamo i pesi eseguendo di nuovo il training sul nuovo dataset;
+        \item Addestramento del Classificatore Finale: aggiorniamo solo gli stati più profondi (finali) della rete mentre i pesi dei primi rimangono congelati;
+        \item Addestramento a Blocchi: i pesi dei blocchi vengono aggiornati singolarmente effettuando l'addestramento blocco per blocco.
+    \end{itemize}   
+\end{itemize}
+
+Per il nostro scopo possiamo effettuare diversi tipi di fine-tuning:
+\begin{enumerate}
+    \item Precisione dei Pesi: i pesi derivati dall'addestramento della rete hanno una precisione, ossia il numero di bit che vengono usati per rappresentare il numero, diminuendola impiegheremo meno memoria necessaria e velocizzeremo la velocità di calcolo;
+    \item Riducendo la Complessità del Modello: possiamo eliminare nodi poco significativi tramite la tecnica detta pruning, diminuendo anche la quantità di operazioni necessarie;
+    \item Compromesso Concorrenza Aggiornamento pesi: il batch size ossia il numero di pesi che si attende prima di aggiornarli evitando di farlo ogni volta per non sprecare risorse di calcolo, incentivando così la concorrenza;
+    \item Ridurre tempo di addestramento: riducendo il numero di epoche, ossia il numero di volte in cui il dataset viene passato attraverso il modello durante la fase di allenamento.
+\end{enumerate}

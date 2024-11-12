@@ -1,0 +1,59 @@
+\chapter{Misure di Valutazione}
+Analizzeremo ora le misure che ci permettono di valutare le prestazioni di un modello allenato sui dati del training set, quindi con i relativi pesi calcolati. I modelli vengono provati sul test set ed otteniamo le seguenti metriche:
+\begin{itemize}
+    \item \textbf{Accuratezza}: rappresenta la percentuale di previsioni corrette (TP - True Positive) su tutti i casi possibili, tiene in considerazione anche i veri negativi (TN).
+    Questa misura ci indica quanto ci stiamo avvicinando ai dati di allenamento.
+    
+    \textit{Formula:}
+        \begin{equation}
+            \frac{TP+TN}{TP+TN+FP+FN}
+        \end{equation}
+    
+    \item \textbf{Precisione}: rappresenta la percentuale di anomalie vere rilevate in confronto a tutte le anomalie segnalate quindi la percentuale di veri positivi.
+
+    \textit{Formula:}
+        \begin{equation}
+            \frac{TP}{TP+FP}
+        \end{equation}
+    Nel nostro caso questa metrica è particolarmente importante dati che un valore troppo basso significherebbe un alta probabilità di avere falsi positivi portando quindi uno spreco di banda ed energia per mandare i messaggi ed un allarme che richiede un intervento non necessario.
+
+    \item \textbf{Richiamo}: rappresenta la percentuale di rilevare tutte le anomalie vere tenendo quindi in considerazione anche le anomalie non rilevate (FN). Questa misura è anche detta sensibilità.
+
+    \textit{Formula:} 
+    \begin{equation}
+        \frac{TP}{TP+FN}
+    \end{equation}
+    Nel contesto dei satelliti questa metrica è cruciale dato che con un valore basso avremmo un grande numero di falsi negativi (FN) che quindi senza intervento potrebbero portare a conseguenze molto gravi.
+    
+    \item \textbf{$F_1$ score}: rappresenta una media armonica tra precisione e recupero dove il massimo si ottiene con il valore uno e il minimo a zero.
+
+    \textit{Formula:}
+    \begin{equation}
+        F_1=\frac{2*TP}{2*TP+FP+FN}
+    \end{equation}
+    Questa misura nel nostro caso che cerchiamo un buon compromesso tra precisione e richiamo per non avere un alto numero né di falsi negativi né di falsi positivi. Questo porta ad un equilibrio tra precisione e capacità di rilevazione.
+
+    \item \textbf{Coefficiente di correlazione di Matthews (MCC)}$^\cite{matthew}$: rappresenta una misura della qualità del modello con dati molto variabili.
+
+    \textit{Formula:}
+    \begin{equation}
+        \frac{TP\cdot TN-FP\cdot FN}{\sqrt{(TP+FP)\cdot (TP+FN)\cdot(TN+TP)\cdot(TN+FN)}}    
+    \end{equation}
+    Questa misura è particolarmente indicata per il rilevamento delle anomalie dato che concede la stessa importanza a veri positivi, falsi positivi, veri negativi e falsi negativi.
+
+    \item \textbf{L'area sotto la curva ROC (AUC$_\text{ROC}$}$^\cite{ROC_google}$$^\cite{ROC}$): rappresenta il rapporto tra il tasso di veri positivi e il tasso di falsi positivi (Figura: \ref{fig:Curva ROC})
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.5\linewidth]{images//Capitolo3/Curva ROC.png}
+        \caption{Curva ROC}
+        \label{fig:Curva ROC}
+    \end{figure}
+    Permette di osservare come varia il richiamo in funzione della metrica di precisione. Può anche essere usato per scegliere il modello migliore tra due guardando semplicemente l'area sotto al grafico, quella con l'area più grande è generalmente quello migliore.
+    
+    \item \textbf{Area sotto la curva Precisione-Richiamo (AUC-PR)}: rappresenta un semplici modo per sintetizzare le prestazioni generali di un modello, più alto è il valore più avrà un numero di predizioni alto. Non vengono considerati i veri positivi nella curva precisione-richiamo.
+\end{itemize}
+In queste formule per il calcolo delle metrica abbiamo usato TP per rappresentare i veri positivi ossia i segmenti delle telemetrie correttamente identificati come anomalie, TN per i veri negativi cioè segmenti correttamente identificati come nominali ossia regolari), FP per i falsi positivi ossia i segmenti erratamente classificati anomalie e FN per i falsi negativi che rappresentano i segmenti erratamente classificati come non anomalie.
+Tutte le metriche descritte possono assumere valori tra $[0,1]$ tranne MCC che assume valori tra $[-1,1]$.
+Tutte le metriche però più si avvicinano ad uno e più il modello testato risulta migliore rispetto ad uno con valori inferiori delle stesse.
+
+Le metriche viste precedentemente ci serviranno successivamente per valutare come poter migliorare in termini di efficienza mantenendo livelli buoni delle metriche fondamentali per il rilevamento delle anomalie, non andando ad intaccare il funzionamento degli algoritmi.
