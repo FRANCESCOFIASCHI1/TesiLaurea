@@ -1,0 +1,19 @@
+# python==3.9.18
+matplotlib==3.8.2
+notebook==7.0.0
+numpy==1.26.2
+pandas==2.1.4
+pyod==1.1.2
+scikit-learn==1.3.2
+seaborn==0.13.0
+xgboost==2.0.3
+tqdm==4.66.1
+joblib
+matplotlib
+numpy>=1.19
+numba>=0.51
+scipy>=1.5.1
+scikit-learn>=0.22.0
+tensorflow==2.6.0
+torch==1.10.0
+pyESN==0.0.2
