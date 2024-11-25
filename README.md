@@ -1,4 +1,2 @@
 # TesiLaurea
-Backup della tesi di laurea triennale.
-
-Nella cartella Backup si trovano le cartelle con tutti i file di backup
+- Codes: contiene i codice dell'implementazione dei vari algoritmi e dei requisiti dell'ambiente
