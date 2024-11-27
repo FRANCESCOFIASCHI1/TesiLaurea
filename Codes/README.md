@@ -1,3 +1,4 @@
+> Contiene i codici degli algoritmi in formato jupiter del paper OPS_SAT per esecuzione in locale
 # Struttura
 - File _dataset_generator_
   - File che genera i dati delle serie temporali del Dataset.
@@ -13,3 +14,4 @@
     - numpy
     - pandas
     - torch
+  - Cartella Rocket: contiene il codice fornito dal paper rocket e metriche aggiunte per la validazione dell'algoritmo
