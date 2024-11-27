@@ -14,4 +14,4 @@
     - numpy
     - pandas
     - torch
-  - Cartella Rocket: contiene il codice fornito dal paper rocket e metriche aggiunte per la validazione dell'algoritmo
+- Cartella Rocket: contiene il codice fornito dal paper rocket e metriche aggiunte per la validazione dell'algoritmo
