@@ -4,6 +4,9 @@
   - dataset_generator
   - requirement
   - Rocket: codice relativo all'esecuzione in locale di rocket
+- FoglioRisultati
+  - PDF dei risultati e i codici più rilevanti
+  - Zip del file latex
 
 # Riferimenti
 - Paper OP_SAT: https://arxiv.org/abs/2407.04730 e https://github.com/kplabs-pl/OPS-SAT-AD
