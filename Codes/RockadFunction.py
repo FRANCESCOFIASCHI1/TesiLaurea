@@ -260,8 +260,8 @@ class ROCKAD():
         
         for idx, bagger in enumerate(self.list_baggers):
             # Get scores from each estimator
-            print(Xtp_scaled.shape)
-            print((Xtp_scaled>100000000).astype(int))
+            # print(Xtp_scaled.shape)
+            # print((Xtp_scaled>100000000).astype(int))
             scores = bagger.predict_proba(Xtp_scaled).squeeze()
             
             y_scores[:, idx] = scores
