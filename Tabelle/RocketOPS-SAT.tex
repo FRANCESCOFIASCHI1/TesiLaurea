@@ -1,0 +1,26 @@
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|c|c|c|c|c|c|c|c|c|}
+    \hline
+ \textbf{Modalità} & \textbf{Acc.} &\textbf{Prec.}  & \textbf{Recall} & \textbf{F1} & \textbf{MCC} & \textbf{auc-pr} & \textbf{auc-roc} & \textbf{NScore}\\
+ \hline
+        \multicolumn{9}{|c|}{\textbf{Unsupervised}} \\
+        \hline
+        \textbf{Treshold} & 0.834 & 0.963 & 0.23 &0.371  & 0.424 & 0.726& 0.772 &0.646 \\
+        \hline
+        \multicolumn{9}{|c|}{\textbf{Supervised}} \\
+        \hline
+         \textbf{RidgeCV} & 0.977 & 0.972 & 0.92 &0.945  & 0.932 & 0.962& 0.984 &0.929 \\
+        \hline
+        \textbf{LogisticReg} & 0.974 & 0.963 & 0.912 &0.936  & 0.92 & 0.964& 0.986 &0.92 \\
+        \hline
+        \textbf{RidgeReg} & 0.864 & 0.936 & 0.389 &0.55  & 0.554 & 0.871& 0.94 &0.92 \\
+        \hline
+        \multicolumn{9}{|c|}{\textbf{Ibrid Unsupervised}} \\
+        \hline
+        \textbf{KNN} & 0.834 & 0.963 & 0.23 &0.371  & 0.424 & 0.726& 0.772 &0.646 \\
+        \hline
+    \end{tabular}
+    \label{tab:RocketOPS_SAT}
+    \caption{Algoritmi eseguiti su OPS-SAT}
+\end{table}

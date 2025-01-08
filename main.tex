@@ -188,6 +188,23 @@
 
 % Impostare lo spazio a due
 % \doublespacing
+% Definisci i colori per il codice
+\usepackage{xcolor}
+\definecolor{mygreen}{rgb}{0.2588, 0.5804, 0.2471}
+
+% Configura lo stile per il codice Python
+\lstset{ 
+frame=tb,                     % Aggiunge una linea sopra (t) e sotto (b)
+  framesep=3pt,                 % Distanza tra il codice e la cornice
+  rulesepcolor=\color{black},   % Colore della linea
+  basicstyle=\ttfamily\footnotesize,      % Stile di base
+  breaklines=true,                        % Spezza le righe lunghe
+  commentstyle=\color{mygreen},           % Colore dei commenti
+  stringstyle=\color{orange},           % Colore delle stringhe
+  emph={__init__, fit, predict, detect_anomalies, decision_function,apply_kernels,generate_kernels,shape, KNN, XGBOD, apply_kernel, ROCKAD}, 
+  emphstyle=\color{blue},                      % Colore per le funzioni
+  language=Python                         % Linguaggio del codice
+}
 
 % -----------------------------------------------------------------
 \begin{document}
@@ -206,6 +223,7 @@
 \include{chapters/Capitolo2}
 \include{chapters/Capitolo3}
 \include{chapters/Capitolo4}
+%\include{chapters/Capitolo5}
 \include{chapters/CapitoloX}
 
 \appendix

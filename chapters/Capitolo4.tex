@@ -1,1 +1,94 @@
-\chapter{Valutazione dei Modelli}
+\chapter{Valutazione Modelli}
+In questo capitolo andremo ad analizzare gli algoritmi di nostro interesse, ossia XGBOD, ROCKED e ROCKAD.
+Questi algoritmi lavorano con le timeseries, le quali sono una sequenza di dati registrati ad intervalli di tempo consecutivi. Ogni punto della serie è associato ad un timestamp il quale indica il momento in cui è stato registrato.
+
+\section{XGBOD}
+XGBOD (eXtreme Gradient Boosting for Outlier Detection) è una struttura composta in tre fasi:
+\begin{enumerate}
+    \item Genera nuove rappresentazioni di dati: vengono applicati vari metodi di rilevamento di anomalie non supervisionati ai dati originali per ottenere punteggi di anomalie, questi rappresentano la nuova vista dei dati;
+    \item Seleziona i punteggi rilevanti: i punteggi ottenuti nella fase precedente vengono filtrati per usare sollo quelli utili, quest'ultimi sono combinati combinati con le caratteristiche iniziali creando un nuovo spazio delle caratteristiche arricchito;
+    \item Addestramento del modello XGBoost: viene addestrato il modello XGBoost su questo nuovo spazio delle caratteristiche e le previsioni determinano se ogni dato è un'anomalia o no.
+\end{enumerate}
+Utilizziamo XGBOD invece che XGBoost direttamente perché quest'ultimo essendo un modello supervisionato ha bisogno di dati etichettati e soprattutto con anomalie rare, non facili da etichettare, XGBOD aggiunge una parte di preprocessing che aggiunge informazioni al set di dati con punteggi di anomalie.
+XGBOD utilizza metodi di rilevamento non supervisionato come Isolation Forest, Local Outlier Factor, ecc..
+
+\subsection{XGBoost}
+Il modello XGBoost di tipo supervisionato, si sviluppa con un processo iterativo di addestramento di alberi decisionali deboli (alberi decisionali poco profondi e quindi poco accurati), questi vengono combinati tra di loro portando un miglioramento progressivo delle prestazioni del modello.
+
+XGBoost è composto da pochi passi ma ripetuti iterativamente: come primo passo vengono calcolati i residui, la differenza tra le previsioni iniziali e i valori reali; questi sono i valori che vogliamo ridurre. Con questi valori il modello addestra un insieme di alberi decisionali deboli, dove ognuno cerca di correggere questi valori migliorando le previsioni del modello precedente. Tutti gli alberi vengono aggiunti al modello complessivo di XGBoost, che aggiorna le sue previsioni combinando tutti gli alberi precedentemente costruiti.
+
+Per regolare tutto questo processo sono applicate internamente tecniche di limitazione e regolazione per evitare un overfitting del modello. All'interno di XGBoost è presente anche una metrica chiamata \textit{tasso di apprendimento} che permette di decidere quanto un albero incide sul risultato finale minimizzando così gli errori di percorso.
+
+\subsection{Risultati ottenuti}
+Qui sono elencati i risultati ottenuti effettuando varie prove con parametri diversi per ottimizzare XGBOD ed ottenere il miglior compromesso tra efficienza ed efficacia.
+\pagebreak
+\input{Tabelle/TabellaXGBOD}
+
+LEGENDA:
+\begin{itemize}
+    \item M+P: significa più modelli e parametri
+    \item Grid: gridsearch con modelli
+    \item EarlyStop: ossia viene utilizzato un meccanismo di EarlyStop che ferma l'esecuzione dell'algoritmo quando gli iperparametri non migliorano più per una numero definito di cicli.
+\end{itemize}
+
+Dalla Tabella \ref{tab:XGBOD_table} possiamo vedere che il miglior risultato è quello che utilizza più modelli per l'addestramento e i parametri modificati al fine di efficientare l'esecuzione. Oltre ad avere dei risultati ottimi l'esecuzione rimane praticamente istantanea sul nostro dataset di esempio OPS-SAT.
+
+\section{Rocket}
+Rocket è un algoritmo convoluzionale o anche detti reti neurali convoluzionali (CNN), lavorano su dati con una struttura a griglia come immagini e serie temporali e sono progettati per riconoscere pattern all'interno dei dati tramite operazioni di convoluzione.
+Vengono utilizzati i kernel\footnote{Matrice di pesi usata per eseguire operazioni di filtraggio per estrarre caratteristiche specifiche, opera tramite moltiplicazioni}, che operando sui dati in input estraggono caratteristiche locali dei dati (features), in questa fase possono essere applicate tecniche di centratura, ovvero aggiungere dei bordi attorno all'input così da mantenere le dimensioni dopo aver applicato il kernel, questo di chiama padding.
+
+Ci sono tecniche applicabile a rocket come il pooling che ha lo scopo di ridurre la dimensione e quindi a rendere l'algoritmo meno sensibile alle traslazioni, vediamo due tecniche:
+\begin{itemize}
+    \item Max Pooling: prende solo il valore massimo in una finestra specifica riducendo la dimensione dell'input
+    \item Avarege Pooling: riduce la dimensione prendendo la media dei valori in una finestra
+\end{itemize}
+
+Il passaggio finale è il passaggio per gli strati; i dati vengono appiattiti (flattering) fatti passare attraverso uno o più strati completamente connessi per la classificazione o la regressione, per ottenere il risultato desiderato.
+
+Rocket in particolare utilizza i kernel convoluzionali casuali, generandone un gran numero di questi con parametri scelti casualmente, come lunghezza del kernel e pesi.
+Questi kernel filtrano i dati delle serie temporali producendo una serie di features; utilizzando tecniche di pooling viste in precedenza otteniamo statistiche riassuntive da queste features.
+Questa procedura viene ripetuta per tutti i kernel portando ad un enorme quantità di caratteristiche e quindi una maggiore possibilità di estrarre tutti i pattern comuni.
+
+Le caratteristiche estratte vengono poi date in input ad algoritmi di classificazione, tipicamente una regressione logistica data la sua scalabilità e velocità su grandi dataset, esso viene addestrato su queste caratteristiche per effettuare la classificazione delle serie temporali.
+
+\subsection{Implementazione}
+Per implementare Rocket abbiamo usato le funzioni che il relativo paper$^{\cite{paper_rocket}}$ ci aveva fornito:
+\begin{lstlisting}[language=Python]
+def generate_kernels(input_length, num_kernels)
+def apply_kernel(X,weights, length, bias, dilation, padding)
+def apply_kernels(X, kernels)
+\end{lstlisting}
+I parametri più importanti sono:
+\begin{itemize}
+    \item Numero di kernel (num-kernels): rappresenta il numero di kernel casuali da generare, il valore predefinito è 10000, un numero maggiore di kernel tende a migliorare l'accuratezza della classificazione ma di conseguenza aumenta la complessità e quindi il tempo di calcolo;
+    \item Lunghezza del kernel (input-length): rappresenta la lunghezza del singolo kernel, questa è casuale e determina quanto della serie temporale viene considerato durante la convoluzione;
+    \item Dilatazione: è un parametro che controlla la distanza tra i punti analizzati nel kernel, rocket usa varie dilatazioni per catturare caratteristiche a diverse scale temporali;
+    \item Padding: determina come vengono gestiti i bordi delle serie temporali durante la fase di convoluzione;
+\end{itemize} 
+
+I vantaggi di ROCKET sono:
+\begin{itemize}
+    \item Efficienza computazionale elevata: è progettato per essere estremamente veloce e scalabile in modo che possa gestire grandi dataset in tempi ristretti;
+    \item Robustezza: dato che si basa su kernel casuali consente di generalizzare bene su nuovi problemi senza la necessità di mettere appunto gli iperparametri;
+    Semplicità: rocket permette di usare un solo iperparametro ossia il numero di kernel, riducendo così la complessità associata al perfezionamento rispetto ad altri metodi di classificazione delle serie temporali.
+\end{itemize}
+Come primo aspetto abbiamo eseguito in locale gli esperimenti del paper di rocket per avere una validazione empirica dell'algoritmo ottenendo gli stessi risultati della tabella del paper$^{\cite{paper_rocket}}$, successivamente ho provato l'implementazione proposta da me sui medesimi dataset ottenendo i risultati della Tabella \ref{tab:Rocket_paper}.
+\input{Tabelle/TabellaRocketPaper}
+\pagebrake
+Nei risultati che osserveremo successivamente nella Tabella \ref{tab:RocketOPS_SAT}, sono state effettuate molte prove con varie modalità, una unsepervised quindi usando rocket per estrarre una grande quantità di caratteristiche e tramite una treshold fare la classificazione senza aver effettuato un training con le etichette dei risultati.
+Una treshold è una soglia, che indica il valore di riferimento per decidere quando una predizione deve essere classificata come positiva  o negativa, in questo caso quando un valore deve essere considerato o no anomalo.
+La seconda modalità che abbiamo osservato è supervised effettuando quindi il training sulle features trovate da rocket passando però le etichette delle classificazioni. Per questo abbiamo utilizzato vari algoritmi supervised pe vedere le varie performance e trovare il migliore.
+Abbiamo anche osservato una modalità ibrida, ossia al posto di utilizzare una treshold o un algoritmo supervised abbiamo puntato su uno unsupervised (KNN) facendo il trining sulle feaures e restituendo delle prediction e delle classificazioni.
+
+\texttt{RidgeClassifierCV}: è il modello usato nella demo del paper di rocket ed ho riscontrato metriche migliori anche nei nostri test.
+\input{Tabelle/RocketOPS-SAT}
+
+\pagebreak
+Riportiamo qui il codice dell'implementazione degli algoritmi più importanti:
+il primo rappresenta rocket con la treshold come decision function:
+\lstinputlisting{listings/Capitolo4/RocketTreshold.py}
+La seconda implementazione è quella relativa a rocket con RidgeClassifierCV:
+\lstinputlisting{listings/Capitolo4/RocketRidgeClassifierCV.py}
+
+\section{Rockad}
+
