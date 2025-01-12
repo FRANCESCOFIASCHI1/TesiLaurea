@@ -179,7 +179,7 @@
 
   % Impostare spaziatura numero testo
   \titleformat{\section}{\normalfont\Large\bfseries}{\thesection}{0.5em}{}  % Per le sezioni
-  \titleformat{\subsection}{\normalfont\normal\bfseries}{\thesubsection}{0.5em}{}  % Per le sezioni
+  \titleformat{\subsection}{\normalfont\bfseries}{\thesubsection}{0.5em}{}  % Per le sezioni
 
 
 %\newcommand{\cgs}[1]{{\textcolor{brown}[\textcolor{red}{\bf{GS: }}{ \textcolor{brown}{#1]}}}}             
@@ -200,12 +200,15 @@ frame=tb,                     % Aggiunge una linea sopra (t) e sotto (b)
   basicstyle=\ttfamily\footnotesize,      % Stile di base
   breaklines=true,                        % Spezza le righe lunghe
   commentstyle=\color{mygreen},           % Colore dei commenti
-  stringstyle=\color{orange},           % Colore delle stringhe
+  stringstyle=\color{brown},           % Colore delle stringhe
   emph={__init__, fit, predict, detect_anomalies, decision_function,apply_kernels,generate_kernels,shape, KNN, XGBOD, apply_kernel, ROCKAD}, 
   emphstyle=\color{blue},                      % Colore per le funzioni
   language=Python                         % Linguaggio del codice
 }
 
+\usepackage{adjustbox}
+\usepackage{xcolor}
+\usepackage{amsmath}
 % -----------------------------------------------------------------
 \begin{document}
 \begin{singlespace}

@@ -1,4 +1,4 @@
-\chapter{Aquisizione dei Dati}
+\chapter{Misure di Valutazione}
 Procediamo ora a descrivere i dataset contenenti dati di telemetrie registrati negli anni e resi pubblici in modo da poter sperimentare e migliorare gli algoritmi già presenti.
 
 \section{Dataset ESA}
@@ -7,7 +7,7 @@ Il dataset di riferimento più importante per la rilevazione delle anomalie è q
 
 Nell'articolo in questione i dati satellitari grezzi di \textit{"Mission 1"} e \textit{"Mission 2"} vengono preprocessati per renderli uniformi e quindi utilizzabili con la maggior parte degli algoritmi.
 
-In questa fase utilizziamo OXI$^{\cite{OXI_annotation_tool}}$ per l'etichettatura collaborativa dei dati da cui si è potuto estrarre delle telemetrie che rappresentano periodi di funzionamento nominale e anomalo. Tutti i dati sono stati sottoposti ad una doppia fase di etichettatura e controllo.
+In questa fase utilizziamo OXI$^{\text{\cite{OXI_annotation_tool}}}$ per l'etichettatura collaborativa dei dati da cui si è potuto estrarre delle telemetrie che rappresentano periodi di funzionamento nominale e anomalo. Tutti i dati sono stati sottoposti ad una doppia fase di etichettatura e controllo.
 
 I canali sono divisi tra "target" e "non target" dove quest'ultimi sono usati per gli algoritmi solo come informazioni addizionali. Un canale target, quello usato per rilevare le anomalie, è diviso in gruppi di dati con caratteristiche simili così da rendere più facile per l'algoritmo processarli ed interpretarli e, nel caso, allenarlo solo sul quel gruppo specifico.
 \pagebreak
@@ -42,33 +42,33 @@ Il senondo problema invece rappresenta la mancanza di annotazione di eventi anom
 
 Il dataset ESA risolve i problemi elencati ma nasce come dataset di missioni su larga scala, le quali sono molto complesse e stabili portando con se problemi non più relativi alla distribuzione delle anomalie ma improntati verso problemi di esecuzione e potenza di calcolo.
 
-Il dataset che intrudurremo dopo è concettualmente diverso, infatti affronta una missione ESA OP-SAT molto semplificata al fine di rendere più accessibile l'uso, oltre ad essere di dimensione considerevolmente minore.
+Il dataset che intrudurremo dopo è concettualmente diverso, infatti affronta una missione ESA OPS\textunderscore SAT molto semplificata al fine di rendere più accessibile l'uso, oltre ad essere di dimensione considerevolmente minore.
 
-Questo processo di apertura è reso anche tramite la sostituzione giornaliera dell'intero sistema software fino al sistema operativo del satellite così da consentire alle persone che sperimentano di caricare il proprio software a bordo e a terra. Per implementare questa funzionalità venne usato FDIR$^{\cite{FDIR}}$
+Questo processo di apertura è reso anche tramite la sostituzione giornaliera dell'intero sistema software fino al sistema operativo del satellite così da consentire alle persone che sperimentano di caricare il proprio software a bordo e a terra. Per implementare questa funzionalità venne usato FDIR$^{\text{\cite{FDIR}}}$
 
 Le telemetrie grezze sono caratterizzate da molte lacune nei dati ed altre imprecisioni, queste vengono curate da ingegneri ed esperti nei modelli di apprendimento automatico per rendere l'insieme di dati fruibile alla creazione di tecniche di rilevamento delle anomalie basate sui dati.
 Una di queste modifiche è la seguente:
 
 \begin{quote}
-    Selezione e annotazione di verità di base (ground-truth) di 2123 brevi frammenti di telemetria a canale singolo ossia serie temporali univariate$^{\cite{10.1007/978-3-031-35995-8_21}}$, registrate in 9 canali di telemetria.
+    Selezione e annotazione di verità di base (ground\textunderscore truth) di 2123 brevi frammenti di telemetria a canale singolo ossia serie temporali univariate$^{\text{\cite{10.1007/978-3-031-35995-8_21}}}$, registrate in 9 canali di telemetria.
 \end{quote}
 
 Infine questo dataset con il relativo benchmark e tutti i dati al suo interno disponibili è stato messo a disposizione per aiutare la comunità nella ricerca di nuovi approcci per la rilevazione delle anomalie, confrontandosi tra di loro in modo imparziale ed equo così da affrontare anche il problema della riproducibilità nell'ambiente dell'apprendimento automatico (dato che i dataset sono sono uniformati, l'ambiente di esecuzione diverso e varie metriche usate) 
 
-Tutto ciò che è stato sviluppato con l'aiuto di questo dataset verrà convalidato con il lancio alla fine del 2025 del satellite successore OP-SAT VOLT (dopo averli distribuiti a bordo del satellite).
+Tutto ciò che è stato sviluppato con l'aiuto di questo dataset verrà convalidato con il lancio alla fine del 2025 del satellite successore OPS\textunderscore SAT VOLT (dopo averli distribuiti a bordo del satellite).
 
 
 \section{OP-SAT Dataset}
-Nel dataset OP-SAT sono contenuti i dati delle telemetrie del satellite OP-SAT dell'ESA (Figura \ref{fig:OP-SAT_satellite}). Questo satellite di tipo CubeSat aveva dimensione 3 unità (3U dove 1U=10cm$^3$), esso ormai non è più in orbita, era stato lanciato a Dicembre del 2019 con lo scopo di dimostrare l'elaborazione dei dati in orbita e di generare dati utili come immagini satellitari e telemetrie.
+Nel dataset OPS\textunderscore SAT sono contenuti i dati delle telemetrie del satellite OPS\textunderscore SAT dell'ESA (Figura \ref{fig:OP-SAT_satellite}). Questo satellite di tipo CubeSat aveva dimensione 3 unità (3U dove 1U=10cm$^3$), esso ormai non è più in orbita, era stato lanciato a Dicembre del 2019 con lo scopo di dimostrare l'elaborazione dei dati in orbita e di generare dati utili come immagini satellitari e telemetrie.
 
 \begin{figure}[h]
     \centering
     \includegraphics[width=0.5\linewidth]{images/Capitolo2/OP-SAT_satellite.png}
-    \caption{Satellite OP-SAT. Fonte: Eropean Space Agency}
+    \caption{Satellite OPS\textunderscore SAT. Fonte: European Space Agency}
     \label{fig:OP-SAT_satellite}
 \end{figure}
 
-Come nel dataset precedente anche qui i dati hanno bisogno di essere preprocessati per renderli fruibili alla maggior parte degli algoritmi (OXI$^{\cite{OXI_annotation_tool}}$). In questo caso sono state progettate 18 caratteristiche per l'attività di rilevamento delle anomalie, ossia sono stati estratti tratti significativi dai dati. Questo processo è chiamato Feature Extraction e serve per ridurre la complessità dei dati in ingresso rendendoli più significativi.
+Come nel dataset precedente anche qui i dati hanno bisogno di essere preprocessati per renderli fruibili alla maggior parte degli algoritmi (OXI$^{\text{\cite{OXI_annotation_tool}}}$). In questo caso sono state progettate 18 caratteristiche per l'attività di rilevamento delle anomalie, ossia sono stati estratti tratti significativi dai dati. Questo processo è chiamato Feature Extraction e serve per ridurre la complessità dei dati in ingresso rendendoli più significativi.
 
 Tutti i segmenti ricavati rappresentano le sfide che dobbiamo affrontare con i dati delle telemetrie, ognuno di questi è composto da:
 \begin{itemize}
@@ -94,10 +94,10 @@ Il dataset è stato diviso in una parte di allenamento, Training Set ($T$), ed u
          Anomalie& 321&529 &434\\
          \hline
     \end{tabular}
-    \caption{Composizione Dataset OP-SAT}
+    \caption{Composizione Dataset OPS\textunderscore SAT}
     \label{tab:dataset_op-sat}
 \end{table}
 
 Le classi, nominali e anomalie, rappresentano rispettivamente segmenti che rispettano valori normali o attesi e segmenti invece che superano questi valori o discordano dai valori attesi.
-Partendo dai benchmark effettuati su questi due dataset, analizzeremo le metriche e le prestazioni utilizzando in modo più specifico il secondo dataset (OP-SAT) che contiene dati più rilevanti per il nostro obbiettivo.
+Partendo dai benchmark effettuati su questi due dataset, analizzeremo le metriche e le prestazioni utilizzando in modo più specifico il secondo dataset (OPS\textunderscore SAT) che contiene dati più rilevanti per il nostro obbiettivo.
 
